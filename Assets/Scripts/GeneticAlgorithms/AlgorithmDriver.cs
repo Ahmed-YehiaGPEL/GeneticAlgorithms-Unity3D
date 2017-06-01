@@ -11,19 +11,19 @@ namespace GeneticAlgorithm
         private static readonly double MutationRate = .015;
         private int TournamentSize = 5;
         private static readonly bool EliteSelection = true;
-        
         private static AlgorithmDriver _instance;
 
-        public GameObject RedBox, BlueBox;
-
         public Text PopulationSizeText;
+
         public Text SolutionPatternText;
+
+        public Text TournamentSizeText;
+
         public Transform SpawnPoint;
-        public int GridWidth, GridHeight;
+        public int GridWidth;
         public int CellWidth;
         public List<ParticleSystem.Particle> particlePoints;
         public List<Individual> Individuals;
-        private Text TournamentSizeText;
 
 
         public static AlgorithmDriver GetInstance()
@@ -116,11 +116,12 @@ namespace GeneticAlgorithm
             FitnessCalc.SetSolution(SolutionPatternText.text);
 
             var popSize = int.Parse(PopulationSizeText.text);
-            TournamentSize = int.Parse(PopulationSizeText.text);
+            TournamentSize = int.Parse(TournamentSizeText.text);
             StartCoroutine(StartGa(popSize));
         }
         private IEnumerator StartGa(int popSize)
         {
+            Individual.lastPosition = Vector3.zero;
             var myPop = new Population(popSize, true);
             var generationCount = 0;
             while (myPop.GetFittest().GetFitness() < FitnessCalc.GetMaxFitness())
