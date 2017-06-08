@@ -36,9 +36,6 @@ namespace GeneticAlgorithm.Samples.Fitness
             {
                 if (Equals(solGene[i], tarGene[i]))
                     fitness++;
-               //if (((BinaryGene)(targetChromosome.GetGene(i))).Value.Equals(((BinaryGene)(sourceChromosome.GetGene(i))).Value))
-               //     fitness++;
-
             }
             return fitness;
         }
