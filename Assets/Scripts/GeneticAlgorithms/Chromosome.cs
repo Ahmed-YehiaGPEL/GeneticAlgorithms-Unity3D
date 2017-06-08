@@ -1,17 +1,11 @@
-﻿
-using System;
-using System.Runtime.InteropServices;
+﻿using System;
 using System.Text;
+using GeneticAlgorithm.Base;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace GeneticAlgorithm
 {
-    public class IndivDataHolder : MonoBehaviour
-    {
-        public string Gene;
-    }
-    public class Individual
+    public class Chromosome 
     {
         private static int _defaultGeneLength = 64;
         public static Vector3 lastPosition = Vector3.zero;
@@ -21,31 +15,24 @@ namespace GeneticAlgorithm
 
         private Transform attachedTransform;
         public ParticleSystem.Particle particle;
-        public Individual()
+
+        public Chromosome()
         {
             _fitness = 0;
-
-            //var obj = Object.Instantiate(AlgorithmDriver.GetInstance().BlueBox, AlgorithmDriver.GetInstance().SpawnPoint.position, Quaternion.identity);
-            //obj.GetComponent<MeshRenderer>().material.SetColor("_Color", GetColor());
-            //attachedTransform = obj.transform;
-#if true
             particle = new ParticleSystem.Particle();
             particle.position = lastPosition;
-            UnityEngine.Debug.Log("POS = " + lastPosition);
+            //UnityEngine.Debug.Log("POS = " + lastPosition);
             if (lastPosition.x == AlgorithmDriver.GetInstance().GridWidth)
             {
-
-                UnityEngine.Debug.Log("Crossing at " + lastPosition + " to " + new Vector3(0, 0.0f, lastPosition.z + AlgorithmDriver.GetInstance().CellWidth) );
+               // UnityEngine.Debug.Log("Crossing at " + lastPosition + " to " + new Vector3(0, 0.0f, lastPosition.z + AlgorithmDriver.GetInstance().CellWidth) );
                 lastPosition =  new Vector3(0,0.0f, lastPosition.z + AlgorithmDriver.GetInstance().CellWidth);
             }
             else
             {
                lastPosition = lastPosition + new Vector3(AlgorithmDriver.GetInstance().CellWidth,0.0f,0.0f);
             }
-#endif
             AlgorithmDriver.GetInstance().Individuals.Add(this);
         }
-
         public void GenerateCode()
         {
             for (int i = 0; i < _defaultGeneLength; i++)
@@ -54,26 +41,20 @@ namespace GeneticAlgorithm
             }
             Recolor();
         }
-
-        
         public static void SetDefaultLength(int pLength)
         {
             _defaultGeneLength = pLength;
         }
-
         public void SetGene(int index, byte value)
         {
             _genes[index] = value;
             _fitness = 0; //Reset Fitness
-
         }
-
         public byte GetGene(int index)
         {
             return _genes[index];
         }
-
-        public int GetFitness()
+        public int GetFitness() 
         {
             if (_fitness == 0)
             {
@@ -82,7 +63,6 @@ namespace GeneticAlgorithm
 
             return _fitness;
         }
-
         public override string ToString()
         {
             var builder = new StringBuilder();
@@ -101,7 +81,6 @@ namespace GeneticAlgorithm
             return _defaultGeneLength;
             
         }
-
         public Color GetColor()
         {
             var blueCount = 0;
@@ -113,7 +92,7 @@ namespace GeneticAlgorithm
                 else
                     redCount++;
             }
-            Debug.Log("Color b = " + blueCount + " Red = " + redCount);
+          //  Debug.Log("Color b = " + blueCount + " Red = " + redCount);
             return new Color((redCount * 3.4f) / 64.0f,0.0f, (3.4f * blueCount) / 64.0f);
         }
         public void Recolor()

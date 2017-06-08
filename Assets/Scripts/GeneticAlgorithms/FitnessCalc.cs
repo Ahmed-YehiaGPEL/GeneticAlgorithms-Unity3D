@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using GeneticAlgorithm;
+using GeneticAlgorithm.Base;
+using GeneticAlgorithm.Samples.Chromosomes;
 using UnityEngine;
 
 namespace GeneticAlgorithm
@@ -12,12 +14,12 @@ namespace GeneticAlgorithm
 
     public class FitnessCalc
     {
-        private static byte[] _solution = new byte[Individual.GetGeneLength()];
+        private static byte[] _solution = new byte[Chromosome.GetGeneLength()];
         private static int defaultGeneLength;
 
         public FitnessCalc()
         {
-            defaultGeneLength = Individual.GetGeneLength();
+            defaultGeneLength = Chromosome.GetGeneLength();
         }
         public static void SetSolution(string newSolution)
         {
@@ -34,17 +36,16 @@ namespace GeneticAlgorithm
             }
         }
 
-        public static int CalculateFitness(Individual individual)
+        public static int CalculateFitness(Chromosome chromosome)
         {
+            var sourceChromosome = ((Chromosome)chromosome);
             var fitness = 0;
-            for (var i = 0; i < _solution.Length; i++)
+            for (var i = 0; i < sourceChromosome.Size(); i++)
             {
-                if (individual.GetGene(i) == _solution[i])
-                {
+                if (Equals(_solution[i], Convert.ToByte(sourceChromosome.GetGene(i))))
                     fitness++;
-                }
             }
-            return fitness;
+            return fitness; ;
         }
 
         public static int GetMaxFitness()

@@ -6,37 +6,37 @@ namespace GeneticAlgorithm
 {
     public class Population 
     {
-        private readonly Individual[] _individuals;
+        private readonly Chromosome[] _chromosomes;
 
         public Population(int populationSize,bool initialize)
         {
-            _individuals = new Individual[populationSize];
+            _chromosomes = new Chromosome[populationSize];
             if (!initialize) return;
             for (var i = 0; i < populationSize; i++)
             {
-                var newIndiv = new Individual();
+                var newIndiv = new Chromosome();
                 newIndiv.GenerateCode();
-                _individuals[i] = newIndiv;
+                _chromosomes[i] = newIndiv;
             }
         }
 
-        public void SetIndividual(int index, Individual ind)
+        public void SetIndividual(int index, Chromosome ind)
         {
-            _individuals[index] = ind;
+            _chromosomes[index] = ind;
         }
         public int GetSize()
         {
-            return _individuals.Length;
+            return _chromosomes.Length;
         } 
-        public Individual GetIndividual(int index)
+        public Chromosome GetIndividual(int index)
         {
-            return _individuals[index];
+            return _chromosomes[index];
         }
 
-        public Individual GetFittest()
+        public Chromosome GetFittest()
         {
-            var fittest = _individuals[0];
-            for (var i = 0; i < _individuals.Length; i++)
+            var fittest = _chromosomes[0];
+            for (var i = 0; i < _chromosomes.Length; i++)
             {
                 if (fittest.GetFitness() <= GetIndividual(i).GetFitness())
                 {

@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GeneticAlgorithm.Base;
+using GeneticAlgorithm.Samples.Chromosomes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,7 +25,7 @@ namespace GeneticAlgorithm
         public int GridWidth;
         public int CellWidth;
         public List<ParticleSystem.Particle> particlePoints;
-        public List<Individual> Individuals;
+        public List<Chromosome> Individuals;
 
 
         public static AlgorithmDriver GetInstance()
@@ -55,7 +57,8 @@ namespace GeneticAlgorithm
             }
             return newPopulation;
         }
-        private  Individual _tournamentSelection(Population population)
+    
+        private  Chromosome _tournamentSelection(Population population)
         {
             // Create a tournament population
             var tournament = new Population(TournamentSize, false);
@@ -69,17 +72,17 @@ namespace GeneticAlgorithm
             var fittest = tournament.GetFittest();
             return fittest;
         }
-        private  void _mutate(Individual individual)
+        private  void _mutate(Chromosome chromosome)
         {
-            for(var i = 0 ; i < individual.Size();i++)
+            for(var i = 0 ; i < chromosome.Size();i++)
                 if (Random.value <= MutationRate)
-                    individual.SetGene(i, ((byte) Mathf.Round(Random.value)));
+                    chromosome.SetGene(i, ((byte) Mathf.Round(Random.value)));
 
-            individual.Recolor();
+            chromosome.Recolor();
         }
-        private Individual _crossOver(Individual i1, Individual i2)
+        private Chromosome _crossOver(Chromosome i1, Chromosome i2)
         {
-            var newSolution = new Individual();
+            var newSolution = new Chromosome();
             for (var i = 0; i < i1.Size(); i++)
             {
                 newSolution.SetGene(i, Random.value <= UniformRate ? i1.GetGene(i) : i2.GetGene(i));
@@ -93,7 +96,7 @@ namespace GeneticAlgorithm
         {
             FitnessCalc.SetSolution("1111111111111111111111111111111111111111111111111111111111111111");
             particlePoints = new List<ParticleSystem.Particle>();
-            Individuals = new List<Individual>();
+            Individuals = new List<Chromosome>();
         }
 
         void Update()
@@ -111,7 +114,7 @@ namespace GeneticAlgorithm
         
             SpawnPoint.GetComponent<ParticleSystem>().Clear(true);
             particlePoints = new List<ParticleSystem.Particle>();
-            Individuals = new List<Individual>();
+            Individuals = new List<Chromosome>();
 
             FitnessCalc.SetSolution(SolutionPatternText.text);
 
@@ -121,15 +124,15 @@ namespace GeneticAlgorithm
         }
         private IEnumerator StartGa(int popSize)
         {
-            Individual.lastPosition = Vector3.zero;
+            Chromosome.lastPosition = Vector3.zero;
             var myPop = new Population(popSize, true);
             var generationCount = 0;
             while (myPop.GetFittest().GetFitness() < FitnessCalc.GetMaxFitness())
             {
                 generationCount++;
-                print("Generation: " + generationCount + " Fittest: " + myPop.GetFittest().GetFitness());
+               // print("Generation: " + generationCount + " Fittest: " + myPop.GetFittest().GetFitness());
                 myPop = EvolvePopulation(myPop);
-
+                UpdateGenerationInfo();
                 Draw();
                 yield return new WaitForSeconds(1.0f);
             }
@@ -140,13 +143,8 @@ namespace GeneticAlgorithm
             print(myPop.GetFittest());
             print(myPop.GetFittest().GetColor());
             
-            /*foreach (var individual in Individuals)
-            {
-                particlePoints.Add(individual.particle);
-            }
-            SpawnPoint.GetComponent<ParticleSystem>().SetParticles(particlePoints.ToArray(),particlePoints.Count);*/
+            
         }
-
         void Draw()
         {
             SpawnPoint.GetComponent<ParticleSystem>().Clear(true);
@@ -156,6 +154,11 @@ namespace GeneticAlgorithm
                 particlePoints.Add(individual.particle);
             }
             SpawnPoint.GetComponent<ParticleSystem>().SetParticles(particlePoints.ToArray(), particlePoints.Count);
+        }
+
+        void UpdateGenerationInfo()
+        {
+            
         }
     }
 }
