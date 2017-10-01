@@ -122,6 +122,8 @@ namespace GeneticAlgorithm
             TournamentSize = int.Parse(TournamentSizeText.text);
             StartCoroutine(StartGa(popSize));
         }
+
+        
         private IEnumerator StartGa(int popSize)
         {
             Chromosome.lastPosition = Vector3.zero;

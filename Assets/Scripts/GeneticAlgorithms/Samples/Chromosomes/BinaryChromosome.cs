@@ -16,9 +16,8 @@ namespace GeneticAlgorithm.Samples.Chromosomes
         {
             DefaultGeneLength = length;
             Fitness = 0;
-            particle = new ParticleSystem.Particle();
-            particle.position = lastPosition;
-           // UnityEngine.Debug.Log("POS = " + lastPosition);
+            particle = new ParticleSystem.Particle {position = lastPosition};
+            // UnityEngine.Debug.Log("POS = " + lastPosition);
             if (lastPosition.x == AlgorithmDriver.GetInstance().GridWidth)
             {
                // UnityEngine.Debug.Log("Crossing at " + lastPosition + " to " + new Vector3(0, 0.0f, lastPosition.z + AlgorithmDriver.GetInstance().CellWidth) );

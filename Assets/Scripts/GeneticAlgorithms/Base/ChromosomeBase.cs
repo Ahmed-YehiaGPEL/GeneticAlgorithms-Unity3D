@@ -24,7 +24,7 @@ namespace GeneticAlgorithm.Base
     {
         public ChromosomeType Type;
         public IGene[] Genes;
-        public IAlgorithmDriver Driver;
+        public AlgorithmDriver Driver;
         public double Fitness { get; set; }
         public int DefaultGeneLength { get { return _defaultGeneLength; } set { _defaultGeneLength = value; } }
         private int _defaultGeneLength = 64;
@@ -36,7 +36,7 @@ namespace GeneticAlgorithm.Base
         }
         public double GetFitness()
         {
-            if (Fitness == 0)
+            if (Math.Abs(Fitness) < MathConstants.FloatingTolerance)
             {
                 Fitness = Driver.GetFitnessCalculator().CalculateFitness(this);
             }

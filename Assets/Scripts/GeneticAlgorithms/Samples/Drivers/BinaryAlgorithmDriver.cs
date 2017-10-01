@@ -14,8 +14,10 @@ using UnityEngine.UI;
 namespace GeneticAlgorithm.Samples.Drivers
 {
     
-    public class BinaryAlgorithmDriver : AlgorithmDriverBase
+    public class BinaryAlgorithmDriver : Base.AlgorithmDriver
     {
+        private const float CrossOverUniformRate = .5f;
+        private const float MutationRate = 0.015f;
         public bool EliteSelection;
         public Text PopulationSizeText;
 
@@ -73,10 +75,10 @@ namespace GeneticAlgorithm.Samples.Drivers
         public override void Initialize()
         {
             CrossoverController = new UniformCrossOver();
-            ((UniformCrossOver) CrossoverController).UniformRate = .5f;
+            ((UniformCrossOver) CrossoverController).UniformRate = CrossOverUniformRate;
 
             MutationController = new BinaryMutation();
-            ((BinaryMutation) MutationController).MutationRate = 0.015f;
+            ((BinaryMutation) MutationController).MutationRate = MutationRate;
 
             SelectionBaseController = new TournamentSelection();
             ((TournamentSelection) SelectionBaseController).SelectionSize = _tournamentSize;
@@ -93,6 +95,7 @@ namespace GeneticAlgorithm.Samples.Drivers
         {
             Initialize();
             print("Initialized");
+            
             ParticlePoints = new List<ParticleSystem.Particle>();
         }
 

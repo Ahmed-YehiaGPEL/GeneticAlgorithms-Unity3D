@@ -3,17 +3,7 @@ using UnityEngine;
 
 namespace GeneticAlgorithm.Base
 {
-    public interface IAlgorithmDriver
-    {
-        IPopulation Evolve(IPopulation population);
-        void Update();
-        void Initialize();
-        void Awake();
-        void Start();
-        void Add(IChromosome chromosome);
-        IFitness GetFitnessCalculator();
-    }
-    public abstract class AlgorithmDriverBase : MonoBehaviour, IAlgorithmDriver
+    public abstract class AlgorithmDriver : MonoBehaviour
     {
         public CrossOverBase CrossoverController;
         public MutationBase MutationController;
@@ -21,7 +11,7 @@ namespace GeneticAlgorithm.Base
         public FitnessBase FitnessCalculator;
         public List<IChromosome> ChromosomesCollection;
         public bool IsInitialized { get; protected set; }
-        protected AlgorithmDriverBase()
+        protected AlgorithmDriver()
         {
             IsInitialized = false;
             ChromosomesCollection = new List<IChromosome>();
